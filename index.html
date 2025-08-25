@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 400px;
+            max-width: 450px;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -37,6 +37,34 @@
             margin-bottom: 30px;
             font-size: 24px;
             font-weight: 600;
+        }
+
+        .input-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .option-btn.active {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
         }
 
         .camera-section {
@@ -54,6 +82,47 @@
 
         #canvas {
             display: none;
+        }
+
+        .upload-section {
+            text-align: center;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 15px;
+            padding: 40px 20px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #FF6B6B;
+            background: #fff0f0;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .upload-text {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtext {
+            color: #999;
+            font-size: 14px;
         }
 
         .image-container {
@@ -79,6 +148,85 @@
             pointer-events: none;
             border-radius: 15px;
             display: none;
+        }
+
+        .pore-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            border-radius: 15px;
+            display: none;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255,0,0,0.3) 2px, transparent 3px),
+                radial-gradient(circle at 80% 25%, rgba(255,100,0,0.4) 1px, transparent 2px),
+                radial-gradient(circle at 60% 40%, rgba(255,0,0,0.2) 3px, transparent 4px),
+                radial-gradient(circle at 30% 60%, rgba(255,150,0,0.3) 2px, transparent 3px),
+                radial-gradient(circle at 70% 70%, rgba(255,0,0,0.4) 2px, transparent 3px),
+                radial-gradient(circle at 45% 80%, rgba(255,100,0,0.2) 1px, transparent 2px),
+                radial-gradient(circle at 25% 45%, rgba(255,0,0,0.3) 2px, transparent 3px),
+                radial-gradient(circle at 75% 50%, rgba(255,150,0,0.4) 3px, transparent 4px),
+                radial-gradient(circle at 50% 20%, rgba(255,100,0,0.2) 1px, transparent 2px),
+                radial-gradient(circle at 85% 60%, rgba(255,0,0,0.3) 2px, transparent 3px);
+        }
+
+        .overlay-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .overlay-btn {
+            background: linear-gradient(45deg, #9C27B0, #BA68C8);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .overlay-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .overlay-btn.active {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+        }
+
+        .pore-legend {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 8px;
         }
 
         .problem-area {
@@ -136,9 +284,9 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             z-index: 1000;
             display: none;
-            max-width: 90vw;
-            max-height: 90vh;
-            overflow: hidden;
+            max-width: 95vw;
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
         .zoom-overlay {
@@ -183,6 +331,7 @@
             display: flex;
             gap: 20px;
             align-items: flex-start;
+            flex-wrap: wrap;
         }
 
         .zoomed-image {
@@ -195,7 +344,7 @@
 
         .zoom-analysis {
             flex: 1;
-            min-width: 200px;
+            min-width: 250px;
         }
 
         .severity-indicator {
@@ -229,12 +378,62 @@
             padding: 15px;
             border-radius: 8px;
             border-left: 4px solid #27ae60;
+            margin-bottom: 15px;
         }
 
         .recommendation-title {
             font-weight: bold;
             color: #27ae60;
             margin-bottom: 8px;
+        }
+
+        .product-links {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .product-links-title {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .product-link {
+            display: block;
+            color: #2980b9;
+            text-decoration: none;
+            margin: 5px 0;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .product-link:hover {
+            background: #3498db;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .info-link {
+            display: block;
+            color: #8e44ad;
+            text-decoration: none;
+            margin: 5px 0;
+            padding: 8px 12px;
+            background: #f8f4ff;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .info-link:hover {
+            background: #8e44ad;
+            color: white;
+            transform: translateX(5px);
         }
 
         .btn {
@@ -398,27 +597,110 @@
             color: #27ae60;
             font-weight: bold;
         }
+
+        @media (max-width: 500px) {
+            .container {
+                max-width: 95vw;
+                padding: 20px;
+            }
+            
+            .zoom-content {
+                flex-direction: column;
+            }
+            
+            .zoomed-image {
+                width: 100%;
+                height: auto;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>✨ Face Aging Analyzer Pro</h1>
         
-        <div class="camera-section">
+        <div class="input-options">
+            <button id="cameraOption" class="option-btn active">📱 Camera</button>
+            <button id="uploadOption" class="option-btn">📁 Upload Photo</button>
+        </div>
+        
+        <div class="camera-section" id="cameraSection">
             <video id="video" autoplay muted playsinline></video>
             
             <div class="image-container">
                 <img id="capturedImage" alt="Captured face">
                 <div class="face-overlay" id="faceOverlay"></div>
+                <div class="pore-overlay" id="poreOverlay"></div>
             </div>
             
             <canvas id="canvas"></canvas>
+            
+            <div class="overlay-controls" id="overlayControls" style="display: none;">
+                <button id="showProblems" class="overlay-btn active">🎯 Problem Areas</button>
+                <button id="showPores" class="overlay-btn">🔍 Pore Mapping</button>
+            </div>
+            
+            <div class="pore-legend" id="poreLegend">
+                <div class="legend-title">Pore Density Map</div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(255,0,0,0.6);"></div>
+                    <span>High Density - T-Zone areas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(255,150,0,0.6);"></div>
+                    <span>Medium Density - Cheek areas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(255,200,100,0.6);"></div>
+                    <span>Low Density - Eye/lip areas</span>
+                </div>
+            </div>
             
             <div>
                 <button id="startCamera" class="btn">📱 Start Camera</button>
                 <button id="capturePhoto" class="btn" style="display: none;">📸 Capture Photo</button>
                 <button id="analyzePhoto" class="btn" style="display: none;">🔍 Analyze Face</button>
                 <button id="retakePhoto" class="btn" style="display: none;">🔄 Retake</button>
+            </div>
+        </div>
+
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-text">📤 Tap to Upload Photo</div>
+                <div class="upload-subtext">Or drag and drop an image here</div>
+            </div>
+            <input type="file" id="fileInput" accept="image/*">
+            
+            <div class="image-container">
+                <img id="uploadedImage" alt="Uploaded face" style="display: none;">
+                <div class="face-overlay" id="uploadFaceOverlay"></div>
+                <div class="pore-overlay" id="uploadPoreOverlay"></div>
+            </div>
+            
+            <div class="overlay-controls" id="uploadOverlayControls" style="display: none;">
+                <button id="uploadShowProblems" class="overlay-btn active">🎯 Problem Areas</button>
+                <button id="uploadShowPores" class="overlay-btn">🔍 Pore Mapping</button>
+            </div>
+            
+            <div class="pore-legend" id="uploadPoreLegend">
+                <div class="legend-title">Pore Density Map</div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(255,0,0,0.6);"></div>
+                    <span>High Density - T-Zone areas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(255,150,0,0.6);"></div>
+                    <span>Medium Density - Cheek areas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(255,200,100,0.6);"></div>
+                    <span>Low Density - Eye/lip areas</span>
+                </div>
+            </div>
+            
+            <div>
+                <button id="analyzeUpload" class="btn" style="display: none;">🔍 Analyze Photo</button>
+                <button id="removeUpload" class="btn" style="display: none;">🗑️ Remove</button>
             </div>
         </div>
 
@@ -429,8 +711,8 @@
 
         <div class="analysis-section" id="analysisSection">
             <div class="face-map-section">
-                <div class="face-map-title">🗺️ Interactive Face Map</div>
-                <div class="face-map-subtitle">Tap the colored areas below to view detailed analysis</div>
+                <div class="face-map-title">🗺️ Interactive Face Analysis</div>
+                <div class="face-map-subtitle">Tap colored areas for detailed analysis • Switch overlays above</div>
             </div>
             
             <div class="overall-score" id="overallScore">
@@ -466,400 +748,131 @@
                     <div class="recommendation-title">💡 Targeted Treatment</div>
                     <div id="recommendationText">Specific recommendations will appear here</div>
                 </div>
+                <div class="product-links">
+                    <div class="product-links-title">🛒 Recommended Products</div>
+                    <div id="productLinks">Product recommendations will appear here</div>
+                </div>
+                <div class="product-links" style="border-left-color: #8e44ad;">
+                    <div class="product-links-title" style="color: #8e44ad;">📚 Learn More</div>
+                    <div id="infoLinks">Educational links will appear here</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let video, canvas, ctx, currentImageData, capturedImage;
+        let video, canvas, ctx, currentImageData, currentImage;
         let stream = null;
         let problemAreas = [];
+        let isUploadMode = false;
+        let currentAnalysis = null;
         
         // Initialize elements
         document.addEventListener('DOMContentLoaded', function() {
             video = document.getElementById('video');
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
-            capturedImage = document.getElementById('capturedImage');
             
             setupEventListeners();
         });
         
         function setupEventListeners() {
+            // Mode switching
+            document.getElementById('cameraOption').addEventListener('click', () => switchMode('camera'));
+            document.getElementById('uploadOption').addEventListener('click', () => switchMode('upload'));
+            
+            // Camera controls
             document.getElementById('startCamera').addEventListener('click', startCamera);
             document.getElementById('capturePhoto').addEventListener('click', capturePhoto);
-            document.getElementById('analyzePhoto').addEventListener('click', analyzePhoto);
+            document.getElementById('analyzePhoto').addEventListener('click', () => analyzePhoto('camera'));
             document.getElementById('retakePhoto').addEventListener('click', retakePhoto);
+            
+            // Upload controls
+            document.getElementById('uploadArea').addEventListener('click', () => document.getElementById('fileInput').click());
+            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+            document.getElementById('analyzeUpload').addEventListener('click', () => analyzePhoto('upload'));
+            document.getElementById('removeUpload').addEventListener('click', removeUpload);
+            
+            // Overlay controls
+            document.getElementById('showProblems').addEventListener('click', () => toggleOverlay('problems', 'camera'));
+            document.getElementById('showPores').addEventListener('click', () => toggleOverlay('pores', 'camera'));
+            document.getElementById('uploadShowProblems').addEventListener('click', () => toggleOverlay('problems', 'upload'));
+            document.getElementById('uploadShowPores').addEventListener('click', () => toggleOverlay('pores', 'upload'));
+            
+            // Modal controls
             document.getElementById('closeZoom').addEventListener('click', closeZoom);
             document.getElementById('zoomOverlay').addEventListener('click', closeZoom);
+            
+            // Drag and drop
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type.startsWith('image/')) {
+                    handleFileSelection(files[0]);
+                }
+            });
         }
         
-        async function startCamera() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user' } 
-                });
-                video.srcObject = stream;
-                video.style.display = 'block';
-                document.getElementById('startCamera').style.display = 'none';
-                document.getElementById('capturePhoto').style.display = 'inline-block';
-            } catch (err) {
-                alert('Camera access denied. Please allow camera permissions and try again.');
-            }
-        }
-        
-        function capturePhoto() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            ctx.drawImage(video, 0, 0);
+        function switchMode(mode) {
+            isUploadMode = mode === 'upload';
             
-            const dataURL = canvas.toDataURL('image/jpeg');
-            capturedImage.src = dataURL;
-            capturedImage.style.display = 'block';
+            // Update button states
+            document.getElementById('cameraOption').classList.toggle('active', !isUploadMode);
+            document.getElementById('uploadOption').classList.toggle('active', isUploadMode);
             
-            video.style.display = 'none';
-            document.getElementById('capturePhoto').style.display = 'none';
-            document.getElementById('analyzePhoto').style.display = 'inline-block';
-            document.getElementById('retakePhoto').style.display = 'inline-block';
+            // Show/hide sections
+            document.getElementById('cameraSection').style.display = isUploadMode ? 'none' : 'block';
+            document.getElementById('uploadSection').style.display = isUploadMode ? 'block' : 'none';
             
-            currentImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            
-            // Stop camera stream
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-            }
-        }
-        
-        function retakePhoto() {
-            capturedImage.style.display = 'none';
-            document.getElementById('faceOverlay').style.display = 'none';
+            // Reset analysis
             document.getElementById('analysisSection').style.display = 'none';
-            document.getElementById('analyzePhoto').style.display = 'none';
-            document.getElementById('retakePhoto').style.display = 'none';
-            document.getElementById('startCamera').style.display = 'inline-block';
-            
-            // Clear problem areas
-            const overlay = document.getElementById('faceOverlay');
-            overlay.innerHTML = '';
-            problemAreas = [];
         }
         
-        async function analyzePhoto() {
-            document.getElementById('loadingSection').style.display = 'block';
-            document.getElementById('analyzePhoto').disabled = true;
-            
-            // Simulate analysis delay
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            
-            const analysis = performFacialAnalysis(currentImageData);
-            displayAnalysis(analysis);
-            createFaceMap(analysis);
-            
-            document.getElementById('loadingSection').style.display = 'none';
-            document.getElementById('analysisSection').style.display = 'block';
-            document.getElementById('faceOverlay').style.display = 'block';
-        }
-        
-        function performFacialAnalysis(imageData) {
-            // Simulate advanced facial analysis
-            const data = imageData.data;
-            let totalBrightness = 0;
-            let colorVariation = 0;
-            let textureComplexity = 0;
-            
-            // Analyze image properties
-            for (let i = 0; i < data.length; i += 4) {
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-                
-                const brightness = (r + g + b) / 3;
-                totalBrightness += brightness;
-                
-                // Calculate color variation
-                const variation = Math.abs(r - g) + Math.abs(g - b) + Math.abs(r - b);
-                colorVariation += variation;
-                
-                // Simple texture analysis
-                if (i > 4) {
-                    const prevBrightness = (data[i-4] + data[i-3] + data[i-2]) / 3;
-                    textureComplexity += Math.abs(brightness - prevBrightness);
-                }
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleFileSelection(file);
             }
-            
-            const pixelCount = data.length / 4;
-            const avgBrightness = totalBrightness / pixelCount;
-            const avgColorVariation = colorVariation / pixelCount;
-            const avgTextureComplexity = textureComplexity / pixelCount;
-            
-            // Generate realistic-looking metrics
-            const skinTone = avgBrightness > 150 ? 'Light' : avgBrightness > 100 ? 'Medium' : 'Dark';
-            const wrinkleScore = Math.min(100, Math.max(0, 100 - (avgTextureComplexity / 2)));
-            const elasticityScore = Math.min(100, Math.max(60, 95 - (avgColorVariation / 10)));
-            const hydrationScore = Math.min(100, Math.max(50, avgBrightness / 2.5));
-            const eventonScore = Math.min(100, Math.max(40, 100 - (avgColorVariation / 8)));
-            
-            const overallScore = Math.round((wrinkleScore + elasticityScore + hydrationScore + eventonScore) / 4);
-            
-            // Generate problem areas based on analysis
-            const areas = generateProblemAreas(wrinkleScore, elasticityScore, hydrationScore, eventonScore);
-            
-            return {
-                overallScore,
-                skinTone,
-                problemAreas: areas,
-                metrics: {
-                    wrinkles: {
-                        score: Math.round(wrinkleScore),
-                        level: wrinkleScore > 80 ? 'excellent' : wrinkleScore > 60 ? 'good' : wrinkleScore > 40 ? 'moderate' : 'concerning'
-                    },
-                    elasticity: {
-                        score: Math.round(elasticityScore),
-                        level: elasticityScore > 80 ? 'excellent' : elasticityScore > 60 ? 'good' : elasticityScore > 40 ? 'moderate' : 'concerning'
-                    },
-                    hydration: {
-                        score: Math.round(hydrationScore),
-                        level: hydrationScore > 80 ? 'excellent' : hydrationScore > 60 ? 'good' : hydrationScore > 40 ? 'moderate' : 'concerning'
-                    },
-                    evenness: {
-                        score: Math.round(eventonScore),
-                        level: eventonScore > 80 ? 'excellent' : eventonScore > 60 ? 'good' : eventonScore > 40 ? 'moderate' : 'concerning'
-                    }
-                }
+        }
+        
+        function handleFileSelection(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const uploadedImage = document.getElementById('uploadedImage');
+                uploadedImage.src = e.target.result;
+                uploadedImage.style.display = 'block';
+                
+                // Setup canvas with uploaded image
+                uploadedImage.onload = function() {
+                    canvas.width = uploadedImage.naturalWidth;
+                    canvas.height = uploadedImage.naturalHeight;
+                    ctx.drawImage(uploadedImage, 0, 0);
+                    currentImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    currentImage = uploadedImage;
+                    
+                    document.getElementById('analyzeUpload').style.display = 'inline-block';
+                    document.getElementById('removeUpload').style.display = 'inline-block';
+                };
             };
+            reader.readAsDataURL(file);
         }
         
-        function generateProblemAreas(wrinkleScore, elasticityScore, hydrationScore, eventonScore) {
-            const areas = [];
-            
-            // Eye area - crow's feet
-            if (wrinkleScore < 70) {
-                areas.push({
-                    x: '75%', y: '35%', size: '15%',
-                    type: 'wrinkles',
-                    severity: wrinkleScore < 40 ? 'high' : wrinkleScore < 60 ? 'medium' : 'low',
-                    label: 'Crow\'s Feet',
-                    description: 'Fine lines around the eye area',
-                    recommendation: 'Use an eye cream with retinol and peptides. Consider professional treatments like Botox for deeper lines.'
-                });
-                
-                areas.push({
-                    x: '25%', y: '35%', size: '15%',
-                    type: 'wrinkles',
-                    severity: wrinkleScore < 40 ? 'high' : wrinkleScore < 60 ? 'medium' : 'low',
-                    label: 'Crow\'s Feet',
-                    description: 'Fine lines around the eye area',
-                    recommendation: 'Use an eye cream with retinol and peptides. Consider professional treatments like Botox for deeper lines.'
-                });
-            }
-            
-            // Forehead lines
-            if (wrinkleScore < 60) {
-                areas.push({
-                    x: '50%', y: '20%', size: '20%',
-                    type: 'wrinkles',
-                    severity: wrinkleScore < 30 ? 'high' : wrinkleScore < 50 ? 'medium' : 'low',
-                    label: 'Forehead Lines',
-                    description: 'Horizontal expression lines',
-                    recommendation: 'Regular moisturizing and sunscreen. Consider Botox for prevention and treatment.'
-                });
-            }
-            
-            // Cheek elasticity
-            if (elasticityScore < 70) {
-                areas.push({
-                    x: '70%', y: '50%', size: '18%',
-                    type: 'elasticity',
-                    severity: elasticityScore < 40 ? 'high' : elasticityScore < 60 ? 'medium' : 'low',
-                    label: 'Skin Sagging',
-                    description: 'Loss of skin firmness',
-                    recommendation: 'Facial massage, collagen supplements, and consider professional treatments like radiofrequency or ultrasound therapy.'
-                });
-                
-                areas.push({
-                    x: '30%', y: '50%', size: '18%',
-                    type: 'elasticity',
-                    severity: elasticityScore < 40 ? 'high' : elasticityScore < 60 ? 'medium' : 'low',
-                    label: 'Skin Sagging',
-                    description: 'Loss of skin firmness',
-                    recommendation: 'Facial massage, collagen supplements, and consider professional treatments like radiofrequency or ultrasound therapy.'
-                });
-            }
-            
-            // Hydration - under eyes
-            if (hydrationScore < 65) {
-                areas.push({
-                    x: '50%', y: '40%', size: '25%',
-                    type: 'hydration',
-                    severity: hydrationScore < 35 ? 'high' : hydrationScore < 55 ? 'medium' : 'low',
-                    label: 'Dehydration',
-                    description: 'Dry, dull skin texture',
-                    recommendation: 'Increase water intake, use hyaluronic acid serums, and apply a rich moisturizer twice daily.'
-                });
-            }
-            
-            // Skin tone evenness
-            if (eventonScore < 65) {
-                areas.push({
-                    x: '45%', y: '60%', size: '22%',
-                    type: 'pigmentation',
-                    severity: eventonScore < 35 ? 'high' : eventonScore < 55 ? 'medium' : 'low',
-                    label: 'Uneven Tone',
-                    description: 'Pigmentation and discoloration',
-                    recommendation: 'Use vitamin C serum daily, apply sunscreen religiously, and consider chemical peels for stubborn spots.'
-                });
-            }
-            
-            return areas;
-        }
-        
-        function createFaceMap(analysis) {
-            const overlay = document.getElementById('faceOverlay');
-            overlay.innerHTML = '';
-            problemAreas = analysis.problemAreas;
-            
-            problemAreas.forEach((area, index) => {
-                const problemDiv = document.createElement('div');
-                problemDiv.className = `problem-area ${area.severity}`;
-                problemDiv.style.left = area.x;
-                problemDiv.style.top = area.y;
-                problemDiv.style.width = area.size;
-                problemDiv.style.height = area.size;
-                problemDiv.style.transform = 'translate(-50%, -50%)';
-                
-                const label = document.createElement('div');
-                label.className = 'problem-label';
-                label.textContent = area.label;
-                label.style.left = '50%';
-                label.style.top = '0%';
-                problemDiv.appendChild(label);
-                
-                problemDiv.addEventListener('click', () => showZoomedAnalysis(area, index));
-                
-                overlay.appendChild(problemDiv);
-            });
-        }
-        
-        function showZoomedAnalysis(area, areaIndex) {
-            const zoomPanel = document.getElementById('zoomPanel');
-            const zoomOverlay = document.getElementById('zoomOverlay');
-            const zoomTitle = document.getElementById('zoomTitle');
-            const severityIndicator = document.getElementById('severityIndicator');
-            const recommendationText = document.getElementById('recommendationText');
-            const zoomedCanvas = document.getElementById('zoomedCanvas');
-            const zoomedCtx = zoomedCanvas.getContext('2d');
-            
-            // Set title
-            zoomTitle.textContent = area.label + ' Analysis';
-            
-            // Set severity indicator
-            severityIndicator.textContent = area.severity.toUpperCase() + ' PRIORITY';
-            severityIndicator.className = 'severity-indicator severity-' + area.severity;
-            
-            // Set recommendation
-            recommendationText.textContent = area.recommendation;
-            
-            // Create zoomed image section
-            const sourceX = parseInt(area.x) / 100 * canvas.width;
-            const sourceY = parseInt(area.y) / 100 * canvas.height;
-            const sourceSize = parseInt(area.size) / 100 * Math.min(canvas.width, canvas.height);
-            
-            // Clear and draw zoomed section
-            zoomedCtx.clearRect(0, 0, 200, 200);
-            zoomedCtx.drawImage(
-                canvas,
-                Math.max(0, sourceX - sourceSize/2),
-                Math.max(0, sourceY - sourceSize/2),
-                sourceSize,
-                sourceSize,
-                0, 0, 200, 200
-            );
-            
-            // Add overlay effect
-            zoomedCtx.strokeStyle = area.severity === 'high' ? '#e74c3c' : area.severity === 'medium' ? '#f39c12' : '#3498db';
-            zoomedCtx.lineWidth = 4;
-            zoomedCtx.strokeRect(20, 20, 160, 160);
-            
-            // Show modal
-            zoomOverlay.style.display = 'block';
-            zoomPanel.style.display = 'block';
-        }
-        
-        function closeZoom() {
-            document.getElementById('zoomOverlay').style.display = 'none';
-            document.getElementById('zoomPanel').style.display = 'none';
-        }
-        
-        function displayAnalysis(analysis) {
-            document.getElementById('scoreNumber').textContent = analysis.overallScore;
-            
-            const resultsContainer = document.getElementById('analysisResults');
-            resultsContainer.innerHTML = '';
-            
-            const metricDescriptions = {
-                wrinkles: 'Fine lines and wrinkle visibility analysis',
-                elasticity: 'Skin firmness and bounce-back capability',
-                hydration: 'Moisture levels and skin barrier health',
-                evenness: 'Skin tone uniformity and texture smoothness'
-            };
-            
-            const metricNames = {
-                wrinkles: 'Fine Lines & Wrinkles',
-                elasticity: 'Skin Elasticity',
-                hydration: 'Hydration Level',
-                evenness: 'Skin Tone Evenness'
-            };
-            
-            for (const [key, metric] of Object.entries(analysis.metrics)) {
-                const metricDiv = document.createElement('div');
-                metricDiv.className = `metric ${metric.level}`;
-                metricDiv.innerHTML = `
-                    <div class="metric-name">${metricNames[key]}</div>
-                    <div class="metric-value">${metric.score}/100</div>
-                    <div class="metric-description">${metricDescriptions[key]}</div>
-                `;
-                resultsContainer.appendChild(metricDiv);
-            }
-            
-            // Generate personalized tips
-            const tips = generateTips(analysis);
-            const tipsList = document.getElementById('tipsList');
-            tipsList.innerHTML = '';
-            tips.forEach(tip => {
-                const li = document.createElement('li');
-                li.textContent = tip;
-                tipsList.appendChild(li);
-            });
-        }
-        
-        function generateTips(analysis) {
-            const tips = [];
-            
-            if (analysis.metrics.hydration.score < 70) {
-                tips.push('Increase daily water intake and use a hydrating serum');
-            }
-            
-            if (analysis.metrics.wrinkles.score < 70) {
-                tips.push('Consider retinol products and consistent sunscreen use');
-            }
-            
-            if (analysis.metrics.elasticity.score < 70) {
-                tips.push('Facial massage and collagen-boosting treatments may help');
-            }
-            
-            if (analysis.metrics.evenness.score < 70) {
-                tips.push('Vitamin C serum can help improve skin tone evenness');
-            }
-            
-            if (analysis.overallScore > 80) {
-                tips.push('Great job! Maintain your current skincare routine');
-            }
-            
-            tips.push('Always wear SPF 30+ sunscreen daily');
-            tips.push('Get 7-8 hours of quality sleep for skin regeneration');
-            
-            return tips.slice(0, 5); // Limit to 5 tips
-        }
-    </script>
-</body>
-</html>
+        function removeUpload() {
+            document.getElementById('uploadedImage').style.display = 'none';
+            document.getElementById('uploadFaceOverlay').style.display = 'none';
+            document.getElementById('uploadPoreOverlay').style.display = 'none';
+            document.getElementById('uploadOverlayControls').style.display = 'none';
+            document.getElementById('uploadPoreLegend').style.display = 'none';
+            document.getElementById('analyzeUpload').style.display = 'none';
+            document.getElementById('removeUpload').style.display =
