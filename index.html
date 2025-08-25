@@ -39,23 +39,6 @@
             font-weight: 600;
         }
 
-        .camera-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        #video {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            display: none;
-        }
-
-        #canvas {
-            display: none;
-        }
-
         .upload-section {
             background: linear-gradient(135deg, #a8e6cf 0%, #7fcdcd 100%);
             padding: 20px;
@@ -90,6 +73,23 @@
         #fileInput {
             position: absolute;
             left: -9999px;
+        }
+
+        .camera-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        #canvas {
+            display: none;
         }
 
         .image-container {
@@ -129,6 +129,33 @@
             opacity: 0.7;
         }
 
+        .overlay-controls {
+            text-align: center;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .overlay-btn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .overlay-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(68, 160, 141, 0.4);
+        }
+
+        .overlay-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        }
+
         .pore-legend {
             background: rgba(0,0,0,0.8);
             color: white;
@@ -161,33 +188,6 @@
             height: 12px;
             border-radius: 3px;
             margin-right: 8px;
-        }
-
-        .overlay-controls {
-            text-align: center;
-            margin: 15px 0;
-            display: none;
-        }
-
-        .overlay-btn {
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 15px;
-            font-size: 12px;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .overlay-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(68, 160, 141, 0.4);
-        }
-
-        .overlay-btn.active {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
         }
 
         .problem-area {
@@ -596,7 +596,7 @@
             <div class="image-container">
                 <img id="capturedImage" alt="Captured face">
                 <div class="face-overlay" id="faceOverlay"></div>
-                <canvas class="pore-overlay" id="poreOverlay" style="display: none;"></canvas>
+                <canvas class="pore-overlay" id="poreOverlay"></canvas>
             </div>
             
             <canvas id="canvas"></canvas>
@@ -847,9 +847,8 @@
             const poreCtx = poreCanvas.getContext('2d');
             
             // Set canvas size to match image
-            const imageRect = capturedImage.getBoundingClientRect();
-            poreCanvas.width = capturedImage.naturalWidth || capturedImage.width;
-            poreCanvas.height = capturedImage.naturalHeight || capturedImage.height;
+            poreCanvas.width = capturedImage.naturalWidth || 300;
+            poreCanvas.height = capturedImage.naturalHeight || 300;
             
             // Create pore density visualization
             const data = currentImageData.data;
@@ -909,4 +908,390 @@
                         // Draw pore indicator
                         poreCtx.fillStyle = color;
                         poreCtx.globalAlpha = 0.6;
-                        poreCt
+                        poreCtx.fillRect(x * (poreCanvas.width / width), y * (poreCanvas.height / height), size, size);
+                    }
+                }
+            }
+        }
+        
+        function performFacialAnalysis(imageData) {
+            // Simulate advanced facial analysis
+            const data = imageData.data;
+            let totalBrightness = 0;
+            let colorVariation = 0;
+            let textureComplexity = 0;
+            
+            // Analyze image properties
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                
+                const brightness = (r + g + b) / 3;
+                totalBrightness += brightness;
+                
+                // Calculate color variation
+                const variation = Math.abs(r - g) + Math.abs(g - b) + Math.abs(r - b);
+                colorVariation += variation;
+                
+                // Simple texture analysis
+                if (i > 4) {
+                    const prevBrightness = (data[i-4] + data[i-3] + data[i-2]) / 3;
+                    textureComplexity += Math.abs(brightness - prevBrightness);
+                }
+            }
+            
+            const pixelCount = data.length / 4;
+            const avgBrightness = totalBrightness / pixelCount;
+            const avgColorVariation = colorVariation / pixelCount;
+            const avgTextureComplexity = textureComplexity / pixelCount;
+            
+            // Generate realistic-looking metrics
+            const skinTone = avgBrightness > 150 ? 'Light' : avgBrightness > 100 ? 'Medium' : 'Dark';
+            const wrinkleScore = Math.min(100, Math.max(0, 100 - (avgTextureComplexity / 2)));
+            const elasticityScore = Math.min(100, Math.max(60, 95 - (avgColorVariation / 10)));
+            const hydrationScore = Math.min(100, Math.max(50, avgBrightness / 2.5));
+            const eventonScore = Math.min(100, Math.max(40, 100 - (avgColorVariation / 8)));
+            
+            const overallScore = Math.round((wrinkleScore + elasticityScore + hydrationScore + eventonScore) / 4);
+            
+            // Generate problem areas based on analysis
+            const areas = generateProblemAreas(wrinkleScore, elasticityScore, hydrationScore, eventonScore);
+            
+            return {
+                overallScore,
+                skinTone,
+                problemAreas: areas,
+                metrics: {
+                    wrinkles: {
+                        score: Math.round(wrinkleScore),
+                        level: wrinkleScore > 80 ? 'excellent' : wrinkleScore > 60 ? 'good' : wrinkleScore > 40 ? 'moderate' : 'concerning'
+                    },
+                    elasticity: {
+                        score: Math.round(elasticityScore),
+                        level: elasticityScore > 80 ? 'excellent' : elasticityScore > 60 ? 'good' : elasticityScore > 40 ? 'moderate' : 'concerning'
+                    },
+                    hydration: {
+                        score: Math.round(hydrationScore),
+                        level: hydrationScore > 80 ? 'excellent' : hydrationScore > 60 ? 'good' : hydrationScore > 40 ? 'moderate' : 'concerning'
+                    },
+                    evenness: {
+                        score: Math.round(eventonScore),
+                        level: eventonScore > 80 ? 'excellent' : eventonScore > 60 ? 'good' : eventonScore > 40 ? 'moderate' : 'concerning'
+                    }
+                }
+            };
+        }
+        
+        function generateProblemAreas(wrinkleScore, elasticityScore, hydrationScore, eventonScore) {
+            const areas = [];
+            
+            // Eye area - crow's feet
+            if (wrinkleScore < 70) {
+                areas.push({
+                    x: '75%', y: '35%', size: '15%',
+                    type: 'wrinkles',
+                    severity: wrinkleScore < 40 ? 'high' : wrinkleScore < 60 ? 'medium' : 'low',
+                    label: 'Crow\'s Feet',
+                    description: 'Fine lines around the eye area',
+                    recommendation: 'Use an eye cream with retinol and peptides. Consider professional treatments like Botox for deeper lines.',
+                    products: [
+                        { name: 'Neutrogena Rapid Wrinkle Repair Eye Cream', url: 'https://www.neutrogena.com/products/skincare/rapid-wrinkle-repair-eye-cream/6811047.html' },
+                        { name: 'Olay Eyes Ultimate Eye Cream', url: 'https://www.olay.com/skin-care-products/eyes-ultimate-eye-cream' }
+                    ],
+                    infoLinks: [
+                        { name: 'How to Prevent Crow\'s Feet - Mayo Clinic', url: 'https://www.mayoclinic.org/diseases-conditions/wrinkles/symptoms-causes/syc-20354927' },
+                        { name: 'Eye Cream Benefits - Dermatology Times', url: 'https://www.dermatologytimes.com/view/benefits-eye-creams' }
+                    ]
+                });
+                
+                areas.push({
+                    x: '25%', y: '35%', size: '15%',
+                    type: 'wrinkles',
+                    severity: wrinkleScore < 40 ? 'high' : wrinkleScore < 60 ? 'medium' : 'low',
+                    label: 'Crow\'s Feet',
+                    description: 'Fine lines around the eye area',
+                    recommendation: 'Use an eye cream with retinol and peptides. Consider professional treatments like Botox for deeper lines.',
+                    products: [
+                        { name: 'RoC Retinol Correxion Eye Cream', url: 'https://www.rocskincare.com/products/retinol-correxion-eye-cream' },
+                        { name: 'LilyAna Naturals Eye Cream', url: 'https://lilyana.com/products/eye-cream-moisturizer' }
+                    ],
+                    infoLinks: [
+                        { name: 'Eye Area Skincare Guide - American Academy of Dermatology', url: 'https://www.aad.org/public/everyday-care/skin-care-secrets/anti-aging/eye-cream' }
+                    ]
+                });
+            }
+            
+            // Forehead lines
+            if (wrinkleScore < 60) {
+                areas.push({
+                    x: '50%', y: '20%', size: '20%',
+                    type: 'wrinkles',
+                    severity: wrinkleScore < 30 ? 'high' : wrinkleScore < 50 ? 'medium' : 'low',
+                    label: 'Forehead Lines',
+                    description: 'Horizontal expression lines',
+                    recommendation: 'Regular moisturizing and sunscreen. Consider Botox for prevention and treatment.',
+                    products: [
+                        { name: 'CeraVe Daily Moisturizing Lotion', url: 'https://www.cerave.com/skincare/moisturizers/daily-moisturizing-lotion' },
+                        { name: 'EltaMD UV Clear Sunscreen', url: 'https://eltamd.com/products/uv-clear' }
+                    ],
+                    infoLinks: [
+                        { name: 'Forehead Wrinkles Prevention - WebMD', url: 'https://www.webmd.com/beauty/cosmetic-procedures-forehead-wrinkles' }
+                    ]
+                });
+            }
+            
+            // Cheek elasticity
+            if (elasticityScore < 70) {
+                areas.push({
+                    x: '70%', y: '50%', size: '18%',
+                    type: 'elasticity',
+                    severity: elasticityScore < 40 ? 'high' : elasticityScore < 60 ? 'medium' : 'low',
+                    label: 'Skin Sagging',
+                    description: 'Loss of skin firmness',
+                    recommendation: 'Facial massage, collagen supplements, and consider professional treatments like radiofrequency or ultrasound therapy.',
+                    products: [
+                        { name: 'Vital Proteins Collagen Peptides', url: 'https://www.vitalproteins.com/products/collagen-peptides' },
+                        { name: 'Jade Roller for Facial Massage', url: 'https://www.sephora.com/search?keyword=jade%20roller' }
+                    ],
+                    infoLinks: [
+                        { name: 'Skin Elasticity and Aging - Harvard Health', url: 'https://www.health.harvard.edu/staying-healthy/why-your-face-ages-and-what-you-can-do' }
+                    ]
+                });
+                
+                areas.push({
+                    x: '30%', y: '50%', size: '18%',
+                    type: 'elasticity',
+                    severity: elasticityScore < 40 ? 'high' : elasticityScore < 60 ? 'medium' : 'low',
+                    label: 'Skin Sagging',
+                    description: 'Loss of skin firmness',
+                    recommendation: 'Facial massage, collagen supplements, and consider professional treatments like radiofrequency or ultrasound therapy.',
+                    products: [
+                        { name: 'NuFACE Trinity Facial Toning Device', url: 'https://www.mynuface.com/trinity-facial-toning-device' },
+                        { name: 'The Ordinary Marine Hyaluronics', url: 'https://theordinary.com/us/marine-hyaluronics-100209.html' }
+                    ],
+                    infoLinks: [
+                        { name: 'Facial Massage Benefits - Healthline', url: 'https://www.healthline.com/health/beauty-skin-care/face-massage' }
+                    ]
+                });
+            }
+            
+            // Hydration - under eyes
+            if (hydrationScore < 65) {
+                areas.push({
+                    x: '50%', y: '40%', size: '25%',
+                    type: 'hydration',
+                    severity: hydrationScore < 35 ? 'high' : hydrationScore < 55 ? 'medium' : 'low',
+                    label: 'Dehydration',
+                    description: 'Dry, dull skin texture',
+                    recommendation: 'Increase water intake, use hyaluronic acid serums, and apply a rich moisturizer twice daily.',
+                    products: [
+                        { name: 'The Ordinary Hyaluronic Acid 2% + B5', url: 'https://theordinary.com/us/hyaluronic-acid-2-b5-100402.html' },
+                        { name: 'Clinique Dramatically Different Moisturizing Lotion+', url: 'https://www.clinique.com/product/1687/5047/skin-care/moisturizers/dramatically-different-moisturizing-lotion' }
+                    ],
+                    infoLinks: [
+                        { name: 'Skin Hydration Guide - Mayo Clinic', url: 'https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/skin-care/art-20048237' }
+                    ]
+                });
+            }
+            
+            // Skin tone evenness
+            if (eventonScore < 65) {
+                areas.push({
+                    x: '45%', y: '60%', size: '22%',
+                    type: 'pigmentation',
+                    severity: eventonScore < 35 ? 'high' : eventonScore < 55 ? 'medium' : 'low',
+                    label: 'Uneven Tone',
+                    description: 'Pigmentation and discoloration',
+                    recommendation: 'Use vitamin C serum daily, apply sunscreen religiously, and consider chemical peels for stubborn spots.',
+                    products: [
+                        { name: 'Skinceuticals CE Ferulic', url: 'https://www.skinceuticals.com/ce-ferulic-635494263000.html' },
+                        { name: 'Paula\'s Choice 2% BHA Liquid Exfoliant', url: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-liquid-exfoliant/201.html' }
+                    ],
+                    infoLinks: [
+                        { name: 'Vitamin C for Skin - Dermatology Association', url: 'https://www.aad.org/public/everyday-care/skin-care-secrets/routine/safely-exfoliate-at-home' }
+                    ]
+                });
+            }
+            
+            return areas;
+        }
+        
+        function createFaceMap(analysis) {
+            const overlay = document.getElementById('faceOverlay');
+            overlay.innerHTML = '';
+            problemAreas = analysis.problemAreas;
+            
+            problemAreas.forEach((area, index) => {
+                const problemDiv = document.createElement('div');
+                problemDiv.className = `problem-area ${area.severity}`;
+                problemDiv.style.left = area.x;
+                problemDiv.style.top = area.y;
+                problemDiv.style.width = area.size;
+                problemDiv.style.height = area.size;
+                problemDiv.style.transform = 'translate(-50%, -50%)';
+                
+                const label = document.createElement('div');
+                label.className = 'problem-label';
+                label.textContent = area.label;
+                label.style.left = '50%';
+                label.style.top = '0%';
+                problemDiv.appendChild(label);
+                
+                problemDiv.addEventListener('click', () => showZoomedAnalysis(area, index));
+                
+                overlay.appendChild(problemDiv);
+            });
+        }
+        
+        function showZoomedAnalysis(area, areaIndex) {
+            const zoomPanel = document.getElementById('zoomPanel');
+            const zoomOverlay = document.getElementById('zoomOverlay');
+            const zoomTitle = document.getElementById('zoomTitle');
+            const severityIndicator = document.getElementById('severityIndicator');
+            const recommendationText = document.getElementById('recommendationText');
+            const productLinks = document.getElementById('productLinks');
+            const infoLinks = document.getElementById('infoLinks');
+            const zoomedCanvas = document.getElementById('zoomedCanvas');
+            const zoomedCtx = zoomedCanvas.getContext('2d');
+            
+            // Set title
+            zoomTitle.textContent = area.label + ' Analysis';
+            
+            // Set severity indicator
+            severityIndicator.textContent = area.severity.toUpperCase() + ' PRIORITY';
+            severityIndicator.className = 'severity-indicator severity-' + area.severity;
+            
+            // Set recommendation
+            recommendationText.textContent = area.recommendation;
+            
+            // Add product links
+            productLinks.innerHTML = '';
+            if (area.products) {
+                area.products.forEach(product => {
+                    const link = document.createElement('a');
+                    link.href = product.url;
+                    link.target = '_blank';
+                    link.className = 'product-link';
+                    link.textContent = '🛒 ' + product.name;
+                    productLinks.appendChild(link);
+                });
+            }
+            
+            // Add info links
+            infoLinks.innerHTML = '';
+            if (area.infoLinks) {
+                area.infoLinks.forEach(info => {
+                    const link = document.createElement('a');
+                    link.href = info.url;
+                    link.target = '_blank';
+                    link.className = 'info-link';
+                    link.textContent = '📚 ' + info.name;
+                    infoLinks.appendChild(link);
+                });
+            }
+            
+            // Create zoomed image section
+            const sourceX = parseInt(area.x) / 100 * canvas.width;
+            const sourceY = parseInt(area.y) / 100 * canvas.height;
+            const sourceSize = parseInt(area.size) / 100 * Math.min(canvas.width, canvas.height);
+            
+            // Clear and draw zoomed section
+            zoomedCtx.clearRect(0, 0, 200, 200);
+            zoomedCtx.drawImage(
+                canvas,
+                Math.max(0, sourceX - sourceSize/2),
+                Math.max(0, sourceY - sourceSize/2),
+                sourceSize,
+                sourceSize,
+                0, 0, 200, 200
+            );
+            
+            // Add overlay effect
+            zoomedCtx.strokeStyle = area.severity === 'high' ? '#e74c3c' : area.severity === 'medium' ? '#f39c12' : '#3498db';
+            zoomedCtx.lineWidth = 4;
+            zoomedCtx.strokeRect(20, 20, 160, 160);
+            
+            // Show modal
+            zoomOverlay.style.display = 'block';
+            zoomPanel.style.display = 'block';
+        }
+        
+        function closeZoom() {
+            document.getElementById('zoomOverlay').style.display = 'none';
+            document.getElementById('zoomPanel').style.display = 'none';
+        }
+        
+        function displayAnalysis(analysis) {
+            document.getElementById('scoreNumber').textContent = analysis.overallScore;
+            
+            const resultsContainer = document.getElementById('analysisResults');
+            resultsContainer.innerHTML = '';
+            
+            const metricDescriptions = {
+                wrinkles: 'Fine lines and wrinkle visibility analysis',
+                elasticity: 'Skin firmness and bounce-back capability',
+                hydration: 'Moisture levels and skin barrier health',
+                evenness: 'Skin tone uniformity and texture smoothness'
+            };
+            
+            const metricNames = {
+                wrinkles: 'Fine Lines & Wrinkles',
+                elasticity: 'Skin Elasticity',
+                hydration: 'Hydration Level',
+                evenness: 'Skin Tone Evenness'
+            };
+            
+            for (const [key, metric] of Object.entries(analysis.metrics)) {
+                const metricDiv = document.createElement('div');
+                metricDiv.className = `metric ${metric.level}`;
+                metricDiv.innerHTML = `
+                    <div class="metric-name">${metricNames[key]}</div>
+                    <div class="metric-value">${metric.score}/100</div>
+                    <div class="metric-description">${metricDescriptions[key]}</div>
+                `;
+                resultsContainer.appendChild(metricDiv);
+            }
+            
+            // Generate personalized tips
+            const tips = generateTips(analysis);
+            const tipsList = document.getElementById('tipsList');
+            tipsList.innerHTML = '';
+            tips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                tipsList.appendChild(li);
+            });
+        }
+        
+        function generateTips(analysis) {
+            const tips = [];
+            
+            if (analysis.metrics.hydration.score < 70) {
+                tips.push('Increase daily water intake and use a hydrating serum');
+            }
+            
+            if (analysis.metrics.wrinkles.score < 70) {
+                tips.push('Consider retinol products and consistent sunscreen use');
+            }
+            
+            if (analysis.metrics.elasticity.score < 70) {
+                tips.push('Facial massage and collagen-boosting treatments may help');
+            }
+            
+            if (analysis.metrics.evenness.score < 70) {
+                tips.push('Vitamin C serum can help improve skin tone evenness');
+            }
+            
+            if (analysis.overallScore > 80) {
+                tips.push('Great job! Maintain your current skincare routine');
+            }
+            
+            tips.push('Always wear SPF 30+ sunscreen daily');
+            tips.push('Get 7-8 hours of quality sleep for skin regeneration');
+            
+            return tips.slice(0, 5); // Limit to 5 tips
+        }
+    </script>
+</body>
+</html>
