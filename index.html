@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 450px;
+            max-width: 400px;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -37,34 +37,6 @@
             margin-bottom: 30px;
             font-size: 24px;
             font-weight: 600;
-        }
-
-        .input-options {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .option-btn {
-            background: linear-gradient(45deg, #4CAF50, #66BB6A);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .option-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .option-btn.active {
-            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
         }
 
         .camera-section {
@@ -85,44 +57,39 @@
         }
 
         .upload-section {
-            text-align: center;
-            margin-bottom: 30px;
-            display: none;
-        }
-
-        .upload-area {
-            border: 2px dashed #ccc;
+            background: linear-gradient(135deg, #a8e6cf 0%, #7fcdcd 100%);
+            padding: 20px;
             border-radius: 15px;
-            padding: 40px 20px;
             margin-bottom: 20px;
-            background: #f9f9f9;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            text-align: center;
+            color: white;
         }
 
-        .upload-area:hover {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-
-        .upload-area.dragover {
-            border-color: #FF6B6B;
-            background: #fff0f0;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .upload-text {
-            color: #666;
+        .upload-title {
             font-size: 16px;
+            font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .upload-subtext {
-            color: #999;
-            font-size: 14px;
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px dashed rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .file-input-wrapper:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.8);
+        }
+
+        #fileInput {
+            position: absolute;
+            left: -9999px;
         }
 
         .image-container {
@@ -159,45 +126,7 @@
             pointer-events: none;
             border-radius: 15px;
             display: none;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255,0,0,0.3) 2px, transparent 3px),
-                radial-gradient(circle at 80% 25%, rgba(255,100,0,0.4) 1px, transparent 2px),
-                radial-gradient(circle at 60% 40%, rgba(255,0,0,0.2) 3px, transparent 4px),
-                radial-gradient(circle at 30% 60%, rgba(255,150,0,0.3) 2px, transparent 3px),
-                radial-gradient(circle at 70% 70%, rgba(255,0,0,0.4) 2px, transparent 3px),
-                radial-gradient(circle at 45% 80%, rgba(255,100,0,0.2) 1px, transparent 2px),
-                radial-gradient(circle at 25% 45%, rgba(255,0,0,0.3) 2px, transparent 3px),
-                radial-gradient(circle at 75% 50%, rgba(255,150,0,0.4) 3px, transparent 4px),
-                radial-gradient(circle at 50% 20%, rgba(255,100,0,0.2) 1px, transparent 2px),
-                radial-gradient(circle at 85% 60%, rgba(255,0,0,0.3) 2px, transparent 3px);
-        }
-
-        .overlay-controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-
-        .overlay-btn {
-            background: linear-gradient(45deg, #9C27B0, #BA68C8);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .overlay-btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .overlay-btn.active {
-            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            opacity: 0.7;
         }
 
         .pore-legend {
@@ -205,7 +134,7 @@
             color: white;
             padding: 15px;
             border-radius: 10px;
-            margin: 10px 0;
+            margin: 20px 0;
             display: none;
         }
 
@@ -215,18 +144,50 @@
             text-align: center;
         }
 
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
         .legend-item {
             display: flex;
             align-items: center;
-            margin: 5px 0;
             font-size: 12px;
         }
 
         .legend-color {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
+            width: 20px;
+            height: 12px;
+            border-radius: 3px;
             margin-right: 8px;
+        }
+
+        .overlay-controls {
+            text-align: center;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .overlay-btn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .overlay-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(68, 160, 141, 0.4);
+        }
+
+        .overlay-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
         }
 
         .problem-area {
@@ -284,8 +245,8 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             z-index: 1000;
             display: none;
-            max-width: 95vw;
-            max-height: 95vh;
+            max-width: 90vw;
+            max-height: 90vh;
             overflow-y: auto;
         }
 
@@ -387,14 +348,14 @@
             margin-bottom: 8px;
         }
 
-        .product-links {
+        .product-suggestions {
             background: #e8f5e8;
             padding: 15px;
             border-radius: 8px;
             border-left: 4px solid #3498db;
         }
 
-        .product-links-title {
+        .products-title {
             font-weight: bold;
             color: #3498db;
             margin-bottom: 10px;
@@ -405,35 +366,43 @@
             color: #2980b9;
             text-decoration: none;
             margin: 5px 0;
-            padding: 8px 12px;
-            background: white;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background 0.3s ease;
         }
 
         .product-link:hover {
-            background: #3498db;
-            color: white;
-            transform: translateX(5px);
+            background: rgba(52, 152, 219, 0.1);
+            text-decoration: underline;
+        }
+
+        .info-links {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f39c12;
+            margin-top: 15px;
+        }
+
+        .info-title {
+            font-weight: bold;
+            color: #f39c12;
+            margin-bottom: 10px;
         }
 
         .info-link {
             display: block;
-            color: #8e44ad;
+            color: #d68910;
             text-decoration: none;
             margin: 5px 0;
-            padding: 8px 12px;
-            background: #f8f4ff;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background 0.3s ease;
         }
 
         .info-link:hover {
-            background: #8e44ad;
-            color: white;
-            transform: translateX(5px);
+            background: rgba(243, 156, 18, 0.1);
+            text-decoration: underline;
         }
 
         .btn {
@@ -598,19 +567,13 @@
             font-weight: bold;
         }
 
-        @media (max-width: 500px) {
-            .container {
-                max-width: 95vw;
-                padding: 20px;
-            }
-            
+        @media (max-width: 480px) {
             .zoom-content {
                 flex-direction: column;
             }
             
-            .zoomed-image {
-                width: 100%;
-                height: auto;
+            .zoom-analysis {
+                min-width: auto;
             }
         }
     </style>
@@ -619,40 +582,49 @@
     <div class="container">
         <h1>✨ Face Aging Analyzer Pro</h1>
         
-        <div class="input-options">
-            <button id="cameraOption" class="option-btn active">📱 Camera</button>
-            <button id="uploadOption" class="option-btn">📁 Upload Photo</button>
+        <div class="upload-section">
+            <div class="upload-title">📤 Upload Existing Photo</div>
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" accept="image/*">
+                <span>Choose Photo from Gallery</span>
+            </div>
         </div>
         
-        <div class="camera-section" id="cameraSection">
+        <div class="camera-section">
             <video id="video" autoplay muted playsinline></video>
             
             <div class="image-container">
                 <img id="capturedImage" alt="Captured face">
                 <div class="face-overlay" id="faceOverlay"></div>
-                <div class="pore-overlay" id="poreOverlay"></div>
+                <canvas class="pore-overlay" id="poreOverlay" style="display: none;"></canvas>
             </div>
             
             <canvas id="canvas"></canvas>
             
-            <div class="overlay-controls" id="overlayControls" style="display: none;">
-                <button id="showProblems" class="overlay-btn active">🎯 Problem Areas</button>
-                <button id="showPores" class="overlay-btn">🔍 Pore Mapping</button>
+            <div class="overlay-controls" id="overlayControls">
+                <button class="overlay-btn active" id="problemBtn">🎯 Problem Areas</button>
+                <button class="overlay-btn" id="poreBtn">🔍 Pore Analysis</button>
             </div>
             
             <div class="pore-legend" id="poreLegend">
-                <div class="legend-title">Pore Density Map</div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(255,0,0,0.6);"></div>
-                    <span>High Density - T-Zone areas</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(255,150,0,0.6);"></div>
-                    <span>Medium Density - Cheek areas</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(255,200,100,0.6);"></div>
-                    <span>Low Density - Eye/lip areas</span>
+                <div class="legend-title">🗺️ Pore Density Map</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff4444;"></div>
+                        <span>Large Pores</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff8800;"></div>
+                        <span>Medium Pores</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ffdd00;"></div>
+                        <span>Small Pores</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #88ff88;"></div>
+                        <span>Minimal Pores</span>
+                    </div>
                 </div>
             </div>
             
@@ -664,55 +636,15 @@
             </div>
         </div>
 
-        <div class="upload-section" id="uploadSection">
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-text">📤 Tap to Upload Photo</div>
-                <div class="upload-subtext">Or drag and drop an image here</div>
-            </div>
-            <input type="file" id="fileInput" accept="image/*">
-            
-            <div class="image-container">
-                <img id="uploadedImage" alt="Uploaded face" style="display: none;">
-                <div class="face-overlay" id="uploadFaceOverlay"></div>
-                <div class="pore-overlay" id="uploadPoreOverlay"></div>
-            </div>
-            
-            <div class="overlay-controls" id="uploadOverlayControls" style="display: none;">
-                <button id="uploadShowProblems" class="overlay-btn active">🎯 Problem Areas</button>
-                <button id="uploadShowPores" class="overlay-btn">🔍 Pore Mapping</button>
-            </div>
-            
-            <div class="pore-legend" id="uploadPoreLegend">
-                <div class="legend-title">Pore Density Map</div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(255,0,0,0.6);"></div>
-                    <span>High Density - T-Zone areas</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(255,150,0,0.6);"></div>
-                    <span>Medium Density - Cheek areas</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(255,200,100,0.6);"></div>
-                    <span>Low Density - Eye/lip areas</span>
-                </div>
-            </div>
-            
-            <div>
-                <button id="analyzeUpload" class="btn" style="display: none;">🔍 Analyze Photo</button>
-                <button id="removeUpload" class="btn" style="display: none;">🗑️ Remove</button>
-            </div>
-        </div>
-
         <div class="loading" id="loadingSection" style="display: none;">
             <div class="loading-spinner"></div>
-            <p>Analyzing facial features and mapping problem areas...</p>
+            <p>Analyzing facial features, pore mapping, and generating recommendations...</p>
         </div>
 
         <div class="analysis-section" id="analysisSection">
             <div class="face-map-section">
                 <div class="face-map-title">🗺️ Interactive Face Analysis</div>
-                <div class="face-map-subtitle">Tap colored areas for detailed analysis • Switch overlays above</div>
+                <div class="face-map-subtitle">Tap colored areas for detailed analysis & product recommendations</div>
             </div>
             
             <div class="overall-score" id="overallScore">
@@ -745,134 +677,236 @@
                     Severity Level
                 </div>
                 <div class="recommendation">
-                    <div class="recommendation-title">💡 Targeted Treatment</div>
+                    <div class="recommendation-title">💡 Treatment Recommendation</div>
                     <div id="recommendationText">Specific recommendations will appear here</div>
                 </div>
-                <div class="product-links">
-                    <div class="product-links-title">🛒 Recommended Products</div>
-                    <div id="productLinks">Product recommendations will appear here</div>
+                <div class="product-suggestions">
+                    <div class="products-title">🛒 Recommended Products</div>
+                    <div id="productLinks"></div>
                 </div>
-                <div class="product-links" style="border-left-color: #8e44ad;">
-                    <div class="product-links-title" style="color: #8e44ad;">📚 Learn More</div>
-                    <div id="infoLinks">Educational links will appear here</div>
+                <div class="info-links">
+                    <div class="info-title">📚 Learn More</div>
+                    <div id="infoLinks"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let video, canvas, ctx, currentImageData, currentImage;
+        let video, canvas, ctx, currentImageData, capturedImage;
         let stream = null;
         let problemAreas = [];
-        let isUploadMode = false;
-        let currentAnalysis = null;
+        let currentOverlay = 'problems';
         
         // Initialize elements
         document.addEventListener('DOMContentLoaded', function() {
             video = document.getElementById('video');
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
+            capturedImage = document.getElementById('capturedImage');
             
             setupEventListeners();
         });
         
         function setupEventListeners() {
-            // Mode switching
-            document.getElementById('cameraOption').addEventListener('click', () => switchMode('camera'));
-            document.getElementById('uploadOption').addEventListener('click', () => switchMode('upload'));
-            
-            // Camera controls
             document.getElementById('startCamera').addEventListener('click', startCamera);
             document.getElementById('capturePhoto').addEventListener('click', capturePhoto);
-            document.getElementById('analyzePhoto').addEventListener('click', () => analyzePhoto('camera'));
+            document.getElementById('analyzePhoto').addEventListener('click', analyzePhoto);
             document.getElementById('retakePhoto').addEventListener('click', retakePhoto);
-            
-            // Upload controls
-            document.getElementById('uploadArea').addEventListener('click', () => document.getElementById('fileInput').click());
-            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
-            document.getElementById('analyzeUpload').addEventListener('click', () => analyzePhoto('upload'));
-            document.getElementById('removeUpload').addEventListener('click', removeUpload);
-            
-            // Overlay controls
-            document.getElementById('showProblems').addEventListener('click', () => toggleOverlay('problems', 'camera'));
-            document.getElementById('showPores').addEventListener('click', () => toggleOverlay('pores', 'camera'));
-            document.getElementById('uploadShowProblems').addEventListener('click', () => toggleOverlay('problems', 'upload'));
-            document.getElementById('uploadShowPores').addEventListener('click', () => toggleOverlay('pores', 'upload'));
-            
-            // Modal controls
             document.getElementById('closeZoom').addEventListener('click', closeZoom);
             document.getElementById('zoomOverlay').addEventListener('click', closeZoom);
-            
-            // Drag and drop
-            const uploadArea = document.getElementById('uploadArea');
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('dragover');
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                const files = e.dataTransfer.files;
-                if (files.length > 0 && files[0].type.startsWith('image/')) {
-                    handleFileSelection(files[0]);
-                }
-            });
+            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+            document.getElementById('problemBtn').addEventListener('click', () => switchOverlay('problems'));
+            document.getElementById('poreBtn').addEventListener('click', () => switchOverlay('pores'));
         }
         
-        function switchMode(mode) {
-            isUploadMode = mode === 'upload';
-            
-            // Update button states
-            document.getElementById('cameraOption').classList.toggle('active', !isUploadMode);
-            document.getElementById('uploadOption').classList.toggle('active', isUploadMode);
-            
-            // Show/hide sections
-            document.getElementById('cameraSection').style.display = isUploadMode ? 'none' : 'block';
-            document.getElementById('uploadSection').style.display = isUploadMode ? 'block' : 'none';
-            
-            // Reset analysis
-            document.getElementById('analysisSection').style.display = 'none';
-        }
-        
-        function handleFileUpload(event) {
+        async function handleFileUpload(event) {
             const file = event.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-                handleFileSelection(file);
-            }
-        }
-        
-        function handleFileSelection(file) {
+            if (!file) return;
+            
             const reader = new FileReader();
             reader.onload = function(e) {
-                const uploadedImage = document.getElementById('uploadedImage');
-                uploadedImage.src = e.target.result;
-                uploadedImage.style.display = 'block';
+                capturedImage.src = e.target.result;
+                capturedImage.style.display = 'block';
                 
-                // Setup canvas with uploaded image
-                uploadedImage.onload = function() {
-                    canvas.width = uploadedImage.naturalWidth;
-                    canvas.height = uploadedImage.naturalHeight;
-                    ctx.drawImage(uploadedImage, 0, 0);
+                // Create canvas with uploaded image
+                const img = new Image();
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
                     currentImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    currentImage = uploadedImage;
                     
-                    document.getElementById('analyzeUpload').style.display = 'inline-block';
-                    document.getElementById('removeUpload').style.display = 'inline-block';
+                    document.getElementById('analyzePhoto').style.display = 'inline-block';
+                    document.getElementById('retakePhoto').style.display = 'inline-block';
                 };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
         
-        function removeUpload() {
-            document.getElementById('uploadedImage').style.display = 'none';
-            document.getElementById('uploadFaceOverlay').style.display = 'none';
-            document.getElementById('uploadPoreOverlay').style.display = 'none';
-            document.getElementById('uploadOverlayControls').style.display = 'none';
-            document.getElementById('uploadPoreLegend').style.display = 'none';
-            document.getElementById('analyzeUpload').style.display = 'none';
-            document.getElementById('removeUpload').style.display =
+        function switchOverlay(type) {
+            currentOverlay = type;
+            const problemBtn = document.getElementById('problemBtn');
+            const poreBtn = document.getElementById('poreBtn');
+            const faceOverlay = document.getElementById('faceOverlay');
+            const poreOverlay = document.getElementById('poreOverlay');
+            const poreLegend = document.getElementById('poreLegend');
+            
+            if (type === 'problems') {
+                problemBtn.classList.add('active');
+                poreBtn.classList.remove('active');
+                faceOverlay.style.display = 'block';
+                poreOverlay.style.display = 'none';
+                poreLegend.style.display = 'none';
+            } else {
+                poreBtn.classList.add('active');
+                problemBtn.classList.remove('active');
+                faceOverlay.style.display = 'none';
+                poreOverlay.style.display = 'block';
+                poreLegend.style.display = 'block';
+            }
+        }
+        
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' } 
+                });
+                video.srcObject = stream;
+                video.style.display = 'block';
+                document.getElementById('startCamera').style.display = 'none';
+                document.getElementById('capturePhoto').style.display = 'inline-block';
+            } catch (err) {
+                alert('Camera access denied. Please allow camera permissions and try again.');
+            }
+        }
+        
+        function capturePhoto() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
+            
+            const dataURL = canvas.toDataURL('image/jpeg');
+            capturedImage.src = dataURL;
+            capturedImage.style.display = 'block';
+            
+            video.style.display = 'none';
+            document.getElementById('capturePhoto').style.display = 'none';
+            document.getElementById('analyzePhoto').style.display = 'inline-block';
+            document.getElementById('retakePhoto').style.display = 'inline-block';
+            
+            currentImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            // Stop camera stream
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+        
+        function retakePhoto() {
+            capturedImage.style.display = 'none';
+            document.getElementById('faceOverlay').style.display = 'none';
+            document.getElementById('poreOverlay').style.display = 'none';
+            document.getElementById('poreLegend').style.display = 'none';
+            document.getElementById('overlayControls').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'none';
+            document.getElementById('analyzePhoto').style.display = 'none';
+            document.getElementById('retakePhoto').style.display = 'none';
+            document.getElementById('startCamera').style.display = 'inline-block';
+            
+            // Clear file input
+            document.getElementById('fileInput').value = '';
+            
+            // Clear problem areas
+            const overlay = document.getElementById('faceOverlay');
+            overlay.innerHTML = '';
+            problemAreas = [];
+        }
+        
+        async function analyzePhoto() {
+            document.getElementById('loadingSection').style.display = 'block';
+            document.getElementById('analyzePhoto').disabled = true;
+            
+            // Simulate analysis delay
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
+            const analysis = performFacialAnalysis(currentImageData);
+            displayAnalysis(analysis);
+            createFaceMap(analysis);
+            createPoreMap();
+            
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'block';
+            document.getElementById('overlayControls').style.display = 'block';
+            document.getElementById('faceOverlay').style.display = 'block';
+        }
+        
+        function createPoreMap() {
+            const poreCanvas = document.getElementById('poreOverlay');
+            const poreCtx = poreCanvas.getContext('2d');
+            
+            // Set canvas size to match image
+            const imageRect = capturedImage.getBoundingClientRect();
+            poreCanvas.width = capturedImage.naturalWidth || capturedImage.width;
+            poreCanvas.height = capturedImage.naturalHeight || capturedImage.height;
+            
+            // Create pore density visualization
+            const data = currentImageData.data;
+            const width = currentImageData.width;
+            const height = currentImageData.height;
+            
+            // Analyze texture to simulate pore detection
+            for (let y = 0; y < height; y += 8) {
+                for (let x = 0; x < width; x += 8) {
+                    const idx = (y * width + x) * 4;
+                    const r = data[idx];
+                    const g = data[idx + 1];
+                    const b = data[idx + 2];
+                    
+                    // Calculate texture variation in local area
+                    let variation = 0;
+                    let count = 0;
+                    
+                    for (let dy = -4; dy <= 4; dy += 2) {
+                        for (let dx = -4; dx <= 4; dx += 2) {
+                            const ny = y + dy;
+                            const nx = x + dx;
+                            
+                            if (ny >= 0 && ny < height && nx >= 0 && nx < width) {
+                                const nidx = (ny * width + nx) * 4;
+                                const nr = data[nidx];
+                                const ng = data[nidx + 1];
+                                const nb = data[nidx + 2];
+                                
+                                variation += Math.abs(r - nr) + Math.abs(g - ng) + Math.abs(b - nb);
+                                count++;
+                            }
+                        }
+                    }
+                    
+                    if (count > 0) {
+                        const avgVariation = variation / count;
+                        
+                        // Map variation to pore size/visibility
+                        let color;
+                        let size;
+                        
+                        if (avgVariation > 25) {
+                            color = '#ff4444'; // Large pores
+                            size = 6;
+                        } else if (avgVariation > 15) {
+                            color = '#ff8800'; // Medium pores  
+                            size = 4;
+                        } else if (avgVariation > 8) {
+                            color = '#ffdd00'; // Small pores
+                            size = 3;
+                        } else {
+                            color = '#88ff88'; // Minimal pores
+                            size = 2;
+                        }
+                        
+                        // Draw pore indicator
+                        poreCtx.fillStyle = color;
+                        poreCtx.globalAlpha = 0.6;
+                        poreCt
