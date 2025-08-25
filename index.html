@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face Aging Analyzer</title>
+    <title>Face Aging Analyzer Pro</title>
     <style>
         * {
             margin: 0;
@@ -56,13 +56,185 @@
             display: none;
         }
 
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
         #capturedImage {
             width: 100%;
             max-width: 300px;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
             display: none;
+        }
+
+        .face-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .problem-area {
+            position: absolute;
+            border: 3px solid;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            pointer-events: all;
+        }
+
+        .problem-area.high {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        .problem-area.medium {
+            border-color: #f39c12;
+            background: rgba(243, 156, 18, 0.2);
+        }
+
+        .problem-area.low {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .problem-label {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+            z-index: 10;
+            transform: translate(-50%, -100%);
+            margin-top: -5px;
+        }
+
+        .zoom-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+            display: none;
+        }
+
+        .zoom-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .zoom-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-content {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .zoomed-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            border: 3px solid #ddd;
+            object-fit: cover;
+        }
+
+        .zoom-analysis {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .severity-indicator {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .severity-high {
+            background: #ffeaea;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+        }
+
+        .severity-medium {
+            background: #fff8e1;
+            color: #f39c12;
+            border: 2px solid #f39c12;
+        }
+
+        .severity-low {
+            background: #e8f4fd;
+            color: #3498db;
+            border: 2px solid #3498db;
+        }
+
+        .recommendation {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .recommendation-title {
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 8px;
         }
 
         .btn {
@@ -105,6 +277,27 @@
             font-size: 20px;
             margin-bottom: 20px;
             text-align: center;
+        }
+
+        .face-map-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .face-map-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .face-map-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 15px;
         }
 
         .metric {
@@ -209,11 +402,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>✨ Face Aging Analyzer</h1>
+        <h1>✨ Face Aging Analyzer Pro</h1>
         
         <div class="camera-section">
             <video id="video" autoplay muted playsinline></video>
-            <img id="capturedImage" alt="Captured face">
+            
+            <div class="image-container">
+                <img id="capturedImage" alt="Captured face">
+                <div class="face-overlay" id="faceOverlay"></div>
+            </div>
+            
             <canvas id="canvas"></canvas>
             
             <div>
@@ -226,10 +424,15 @@
 
         <div class="loading" id="loadingSection" style="display: none;">
             <div class="loading-spinner"></div>
-            <p>Analyzing facial features...</p>
+            <p>Analyzing facial features and mapping problem areas...</p>
         </div>
 
         <div class="analysis-section" id="analysisSection">
+            <div class="face-map-section">
+                <div class="face-map-title">🗺️ Interactive Face Map</div>
+                <div class="face-map-subtitle">Tap the colored areas below to view detailed analysis</div>
+            </div>
+            
             <div class="overall-score" id="overallScore">
                 <div class="score-number" id="scoreNumber">--</div>
                 <div>Overall Skin Health Score</div>
@@ -246,15 +449,38 @@
         </div>
     </div>
 
+    <!-- Zoom Modal -->
+    <div class="zoom-overlay" id="zoomOverlay"></div>
+    <div class="zoom-panel" id="zoomPanel">
+        <div class="zoom-header">
+            <div class="zoom-title" id="zoomTitle">Problem Area Analysis</div>
+            <button class="close-btn" id="closeZoom">×</button>
+        </div>
+        <div class="zoom-content">
+            <canvas class="zoomed-image" id="zoomedCanvas" width="200" height="200"></canvas>
+            <div class="zoom-analysis">
+                <div class="severity-indicator" id="severityIndicator">
+                    Severity Level
+                </div>
+                <div class="recommendation">
+                    <div class="recommendation-title">💡 Targeted Treatment</div>
+                    <div id="recommendationText">Specific recommendations will appear here</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let video, canvas, ctx, currentImageData;
+        let video, canvas, ctx, currentImageData, capturedImage;
         let stream = null;
+        let problemAreas = [];
         
         // Initialize elements
         document.addEventListener('DOMContentLoaded', function() {
             video = document.getElementById('video');
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
+            capturedImage = document.getElementById('capturedImage');
             
             setupEventListeners();
         });
@@ -264,6 +490,8 @@
             document.getElementById('capturePhoto').addEventListener('click', capturePhoto);
             document.getElementById('analyzePhoto').addEventListener('click', analyzePhoto);
             document.getElementById('retakePhoto').addEventListener('click', retakePhoto);
+            document.getElementById('closeZoom').addEventListener('click', closeZoom);
+            document.getElementById('zoomOverlay').addEventListener('click', closeZoom);
         }
         
         async function startCamera() {
@@ -286,8 +514,8 @@
             ctx.drawImage(video, 0, 0);
             
             const dataURL = canvas.toDataURL('image/jpeg');
-            document.getElementById('capturedImage').src = dataURL;
-            document.getElementById('capturedImage').style.display = 'block';
+            capturedImage.src = dataURL;
+            capturedImage.style.display = 'block';
             
             video.style.display = 'none';
             document.getElementById('capturePhoto').style.display = 'none';
@@ -303,11 +531,17 @@
         }
         
         function retakePhoto() {
-            document.getElementById('capturedImage').style.display = 'none';
+            capturedImage.style.display = 'none';
+            document.getElementById('faceOverlay').style.display = 'none';
             document.getElementById('analysisSection').style.display = 'none';
             document.getElementById('analyzePhoto').style.display = 'none';
             document.getElementById('retakePhoto').style.display = 'none';
             document.getElementById('startCamera').style.display = 'inline-block';
+            
+            // Clear problem areas
+            const overlay = document.getElementById('faceOverlay');
+            overlay.innerHTML = '';
+            problemAreas = [];
         }
         
         async function analyzePhoto() {
@@ -315,13 +549,15 @@
             document.getElementById('analyzePhoto').disabled = true;
             
             // Simulate analysis delay
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 3000));
             
             const analysis = performFacialAnalysis(currentImageData);
             displayAnalysis(analysis);
+            createFaceMap(analysis);
             
             document.getElementById('loadingSection').style.display = 'none';
             document.getElementById('analysisSection').style.display = 'block';
+            document.getElementById('faceOverlay').style.display = 'block';
         }
         
         function performFacialAnalysis(imageData) {
@@ -365,9 +601,13 @@
             
             const overallScore = Math.round((wrinkleScore + elasticityScore + hydrationScore + eventonScore) / 4);
             
+            // Generate problem areas based on analysis
+            const areas = generateProblemAreas(wrinkleScore, elasticityScore, hydrationScore, eventonScore);
+            
             return {
                 overallScore,
                 skinTone,
+                problemAreas: areas,
                 metrics: {
                     wrinkles: {
                         score: Math.round(wrinkleScore),
@@ -387,6 +627,167 @@
                     }
                 }
             };
+        }
+        
+        function generateProblemAreas(wrinkleScore, elasticityScore, hydrationScore, eventonScore) {
+            const areas = [];
+            
+            // Eye area - crow's feet
+            if (wrinkleScore < 70) {
+                areas.push({
+                    x: '75%', y: '35%', size: '15%',
+                    type: 'wrinkles',
+                    severity: wrinkleScore < 40 ? 'high' : wrinkleScore < 60 ? 'medium' : 'low',
+                    label: 'Crow\'s Feet',
+                    description: 'Fine lines around the eye area',
+                    recommendation: 'Use an eye cream with retinol and peptides. Consider professional treatments like Botox for deeper lines.'
+                });
+                
+                areas.push({
+                    x: '25%', y: '35%', size: '15%',
+                    type: 'wrinkles',
+                    severity: wrinkleScore < 40 ? 'high' : wrinkleScore < 60 ? 'medium' : 'low',
+                    label: 'Crow\'s Feet',
+                    description: 'Fine lines around the eye area',
+                    recommendation: 'Use an eye cream with retinol and peptides. Consider professional treatments like Botox for deeper lines.'
+                });
+            }
+            
+            // Forehead lines
+            if (wrinkleScore < 60) {
+                areas.push({
+                    x: '50%', y: '20%', size: '20%',
+                    type: 'wrinkles',
+                    severity: wrinkleScore < 30 ? 'high' : wrinkleScore < 50 ? 'medium' : 'low',
+                    label: 'Forehead Lines',
+                    description: 'Horizontal expression lines',
+                    recommendation: 'Regular moisturizing and sunscreen. Consider Botox for prevention and treatment.'
+                });
+            }
+            
+            // Cheek elasticity
+            if (elasticityScore < 70) {
+                areas.push({
+                    x: '70%', y: '50%', size: '18%',
+                    type: 'elasticity',
+                    severity: elasticityScore < 40 ? 'high' : elasticityScore < 60 ? 'medium' : 'low',
+                    label: 'Skin Sagging',
+                    description: 'Loss of skin firmness',
+                    recommendation: 'Facial massage, collagen supplements, and consider professional treatments like radiofrequency or ultrasound therapy.'
+                });
+                
+                areas.push({
+                    x: '30%', y: '50%', size: '18%',
+                    type: 'elasticity',
+                    severity: elasticityScore < 40 ? 'high' : elasticityScore < 60 ? 'medium' : 'low',
+                    label: 'Skin Sagging',
+                    description: 'Loss of skin firmness',
+                    recommendation: 'Facial massage, collagen supplements, and consider professional treatments like radiofrequency or ultrasound therapy.'
+                });
+            }
+            
+            // Hydration - under eyes
+            if (hydrationScore < 65) {
+                areas.push({
+                    x: '50%', y: '40%', size: '25%',
+                    type: 'hydration',
+                    severity: hydrationScore < 35 ? 'high' : hydrationScore < 55 ? 'medium' : 'low',
+                    label: 'Dehydration',
+                    description: 'Dry, dull skin texture',
+                    recommendation: 'Increase water intake, use hyaluronic acid serums, and apply a rich moisturizer twice daily.'
+                });
+            }
+            
+            // Skin tone evenness
+            if (eventonScore < 65) {
+                areas.push({
+                    x: '45%', y: '60%', size: '22%',
+                    type: 'pigmentation',
+                    severity: eventonScore < 35 ? 'high' : eventonScore < 55 ? 'medium' : 'low',
+                    label: 'Uneven Tone',
+                    description: 'Pigmentation and discoloration',
+                    recommendation: 'Use vitamin C serum daily, apply sunscreen religiously, and consider chemical peels for stubborn spots.'
+                });
+            }
+            
+            return areas;
+        }
+        
+        function createFaceMap(analysis) {
+            const overlay = document.getElementById('faceOverlay');
+            overlay.innerHTML = '';
+            problemAreas = analysis.problemAreas;
+            
+            problemAreas.forEach((area, index) => {
+                const problemDiv = document.createElement('div');
+                problemDiv.className = `problem-area ${area.severity}`;
+                problemDiv.style.left = area.x;
+                problemDiv.style.top = area.y;
+                problemDiv.style.width = area.size;
+                problemDiv.style.height = area.size;
+                problemDiv.style.transform = 'translate(-50%, -50%)';
+                
+                const label = document.createElement('div');
+                label.className = 'problem-label';
+                label.textContent = area.label;
+                label.style.left = '50%';
+                label.style.top = '0%';
+                problemDiv.appendChild(label);
+                
+                problemDiv.addEventListener('click', () => showZoomedAnalysis(area, index));
+                
+                overlay.appendChild(problemDiv);
+            });
+        }
+        
+        function showZoomedAnalysis(area, areaIndex) {
+            const zoomPanel = document.getElementById('zoomPanel');
+            const zoomOverlay = document.getElementById('zoomOverlay');
+            const zoomTitle = document.getElementById('zoomTitle');
+            const severityIndicator = document.getElementById('severityIndicator');
+            const recommendationText = document.getElementById('recommendationText');
+            const zoomedCanvas = document.getElementById('zoomedCanvas');
+            const zoomedCtx = zoomedCanvas.getContext('2d');
+            
+            // Set title
+            zoomTitle.textContent = area.label + ' Analysis';
+            
+            // Set severity indicator
+            severityIndicator.textContent = area.severity.toUpperCase() + ' PRIORITY';
+            severityIndicator.className = 'severity-indicator severity-' + area.severity;
+            
+            // Set recommendation
+            recommendationText.textContent = area.recommendation;
+            
+            // Create zoomed image section
+            const sourceX = parseInt(area.x) / 100 * canvas.width;
+            const sourceY = parseInt(area.y) / 100 * canvas.height;
+            const sourceSize = parseInt(area.size) / 100 * Math.min(canvas.width, canvas.height);
+            
+            // Clear and draw zoomed section
+            zoomedCtx.clearRect(0, 0, 200, 200);
+            zoomedCtx.drawImage(
+                canvas,
+                Math.max(0, sourceX - sourceSize/2),
+                Math.max(0, sourceY - sourceSize/2),
+                sourceSize,
+                sourceSize,
+                0, 0, 200, 200
+            );
+            
+            // Add overlay effect
+            zoomedCtx.strokeStyle = area.severity === 'high' ? '#e74c3c' : area.severity === 'medium' ? '#f39c12' : '#3498db';
+            zoomedCtx.lineWidth = 4;
+            zoomedCtx.strokeRect(20, 20, 160, 160);
+            
+            // Show modal
+            zoomOverlay.style.display = 'block';
+            zoomPanel.style.display = 'block';
+        }
+        
+        function closeZoom() {
+            document.getElementById('zoomOverlay').style.display = 'none';
+            document.getElementById('zoomPanel').style.display = 'none';
         }
         
         function displayAnalysis(analysis) {
